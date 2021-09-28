@@ -10,11 +10,14 @@ const TodoItemContainer = styled.div`
   box-shadow: 0 4px 8px grey;
 `;
 
+export const getBorderStyleForDate = (startingDate, currentDate) =>
+  startingDate > new Date(currentDate - 8640000 * 5)
+    ? "none"
+    : "4px solid rgba(255,0,0,0.3)";
+
 const TodoItemContainerWithWarning = styled(TodoItemContainer)`
   border-bottom: ${(props) =>
-    new Date(props.createdAt) > new Date(Date.now() - 8640000 * 5)
-      ? "none"
-      : "4px solid rgba(255,0,0,0.3)"};
+    getBorderStyleForDate(new Date(props.createdAt), Date.now())};
 `;
 
 const ButtonsContainer = styled.div`
@@ -42,7 +45,9 @@ const RemoveButton = styled(Button)`
 `;
 
 const TodoListItem = ({ todo, onRemovePressed, onCompletedPressed }) => {
-  const Container = todo.isCompleted ? TodoItemContainer : TodoItemContainerWithWarning;
+  const Container = todo.isCompleted
+    ? TodoItemContainer
+    : TodoItemContainerWithWarning;
   return (
     <Container createdAt={todo.createdAt}>
       <h3>{todo.text}</h3>

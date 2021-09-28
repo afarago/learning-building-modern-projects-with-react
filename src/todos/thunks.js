@@ -20,7 +20,7 @@ export const displayAlert = (text) => () => {
 //const delay = ms => new Promise(res => setTimeout(res, ms));
 // helper usage: await delay(2000);
 
-export const loadTodos = () => async (dispatch, getState) => {
+export const loadTodos = () => async (dispatch) => {
   try {
     dispatch(loadTodosInProgress());
     const response = await fetch("http://localhost:8080/todos");
