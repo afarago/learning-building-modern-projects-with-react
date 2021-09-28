@@ -1,16 +1,36 @@
 import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 import TodoListItem from "./TodoListItem.js";
 import NewTodoForm from "./NewTodoForm.js";
-import { connect } from "react-redux";
 import {
   loadTodos,
   removeTodoRequest,
   markTodoAsCompletedRequest,
 } from "./thunks";
-import "./TodoList.css";
+import {
+  getTodosLoading,
+  getCompletedTodos,
+  getIncompleteTodos,
+} from "./selectors";
+
+
+/* STYLED COMPONENTS --------------------------------
+// // `` -> tag function
+// const BigRedText = styled.div`
+//   font-size: 48px;
+//   color: #ff0000;
+// `;
+-------------------------------- */
+
+const ListWrapper = styled.div`
+  max-width: 700px;
+  margin: auto;
+`;
 
 export const TodoList = ({
-  todos = [],
+  completedTodos,
+  incompleteTodos,
   onRemovePressed,
   onCompletedPressed,
   isLoading,
@@ -22,9 +42,10 @@ export const TodoList = ({
 
   const loadingMessage = <div>Loading todos...</div>;
   const content = (
-    <div className="list-wrapper">
+    <ListWrapper>
       <NewTodoForm />
-      {todos.map((todo, key) => (
+      <h3>Incomplete:</h3>
+      {incompleteTodos.map((todo, key) => (
         <TodoListItem
           todo={todo}
           onRemovePressed={onRemovePressed}
@@ -32,15 +53,25 @@ export const TodoList = ({
           key={key}
         />
       ))}
-    </div>
+      <h3>Completed:</h3>
+      {completedTodos.map((todo, key) => (
+        <TodoListItem
+          todo={todo}
+          onRemovePressed={onRemovePressed}
+          onCompletedPressed={onCompletedPressed}
+          key={key}
+        />
+      ))}
+    </ListWrapper>
   );
   return isLoading ? loadingMessage : content;
 };
 
 // NewTodoForm component gets access to the todos in our global state
 const mapStateToProps = (state) => ({
-  isLoading: state.isLoading,
-  todos: state.todos,
+  completedTodos: getCompletedTodos(state),
+  incompleteTodos: getIncompleteTodos(state),
+  isLoading: getTodosLoading(state),
 });
 
 // allows component to trigger actions that the redux store will respond to

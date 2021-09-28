@@ -1,3 +1,9 @@
+/* 
+ in Redux, a thunk is simply a function that returns another function, which contains the actual logic that we want to perform when it's triggered.
+
+ Thunks handle side effects
+*/
+
 import {
   loadTodosInProgress,
   loadTodosSuccess,
@@ -7,7 +13,6 @@ import {
   markTodoAsCompleted,
 } from "./actions";
 
-// in Redux, a thunk is simply a function that returns another function, which contains the actual logic that we want to perform when it's triggered.
 export const displayAlert = (text) => () => {
   alert(text);
 };
