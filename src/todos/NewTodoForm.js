@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { createTodo } from "./actions";
+import { addTodoRequest } from "./thunks";
 import "./NewTodoForm.css";
-
 
 // best practices: export both connected and unconnected version for testing + app usage
 export const NewTodoForm = ({ todos, onCreatePressed }) => {
@@ -42,7 +41,7 @@ const mapStateToProps = (state) => ({
 
 // allows component to trigger actions that the redux store will respond to
 const mapDispatchToProps = (dispatch) => ({
-  onCreatePressed: (text) => dispatch(createTodo(text)),
+  onCreatePressed: (text) => dispatch(addTodoRequest(text)),
 });
 
 // connect()() - higher order function
